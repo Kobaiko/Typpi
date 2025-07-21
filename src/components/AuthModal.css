@@ -1,0 +1,410 @@
+.auth-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.auth-modal {
+  background: #1a1a1a;
+  border-radius: 16px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+  border: 1px solid #333;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.close-button:hover {
+  color: white;
+  background: #333;
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-header h2 {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.auth-header p {
+  color: #888;
+  font-size: 0.875rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.form-group input {
+  background: #0a0a0a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 0.75rem;
+  color: white;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.form-group input::placeholder {
+  color: #666;
+}
+
+.auth-submit-btn {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  border: none;
+  border-radius: 8px;
+  padding: 0.875rem;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+}
+
+.auth-submit-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+}
+
+.auth-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid transparent;
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #333;
+}
+
+.auth-footer p {
+  color: #888;
+  font-size: 0.875rem;
+}
+
+.toggle-auth-btn {
+  background: transparent;
+  border: none;
+  color: #8b5cf6;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.toggle-auth-btn:hover {
+  color: #ec4899;
+}
+
+/* Website input group */
+.website-input-group {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.website-input-group input {
+  flex: 1;
+}
+
+.scrape-btn {
+  background: #EC4899;
+  border: none;
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 80px;
+}
+
+.scrape-btn:hover:not(:disabled) {
+  background: #db2777;
+  transform: translateY(-1px);
+}
+
+.scrape-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.mini-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid transparent;
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.form-hint {
+  color: #666;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+/* Brand Preview Modal */
+.brand-preview-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  backdrop-filter: blur(8px);
+}
+
+.brand-preview-modal {
+  background: #1a1a1a;
+  border-radius: 16px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  border: 1px solid #333;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+}
+
+.brand-preview-modal h3 {
+  color: white;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.brand-preview-modal > p {
+  color: #888;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.brand-preview-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.brand-section {
+  background: #0a0a0a;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.brand-section h4 {
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+}
+
+.brand-logo-preview {
+  max-width: 200px;
+  max-height: 80px;
+  object-fit: contain;
+  background: white;
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+
+.color-palette {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.color-swatch {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  border: 2px solid #333;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.color-swatch:hover {
+  transform: scale(1.05);
+}
+
+.color-code {
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  font-size: 0.6rem;
+  padding: 0.25rem;
+  border-radius: 4px;
+  margin-bottom: 0.25rem;
+  font-family: monospace;
+}
+
+.brand-tone {
+  color: #ccc;
+  font-style: italic;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.brand-language {
+  color: #ccc;
+  font-weight: 500;
+  margin: 0;
+}
+
+.brand-preview-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.brand-confirm-btn {
+  background: linear-gradient(135deg, #10B981, #059669);
+  border: none;
+  color: white;
+  padding: 0.875rem 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.brand-confirm-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+}
+
+.brand-skip-btn {
+  background: transparent;
+  border: 1px solid #333;
+  color: #888;
+  padding: 0.875rem 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.brand-skip-btn:hover {
+  border-color: #555;
+  color: white;
+  background: #111;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 480px) {
+  .auth-modal {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+  
+  .auth-header h2 {
+    font-size: 1.25rem;
+  }
+  
+  .website-input-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .scrape-btn {
+    min-width: auto;
+  }
+  
+  .brand-preview-modal {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+  
+  .color-palette {
+    justify-content: center;
+  }
+  
+  .brand-preview-actions {
+    flex-direction: column;
+  }
+}

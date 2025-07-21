@@ -1,0 +1,339 @@
+.brand-profile-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(8px);
+}
+
+.brand-profile-modal {
+  background: #1a1a1a;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border: 1px solid #333;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+}
+
+.brand-profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 2rem 1rem 2rem;
+  border-bottom: 1px solid #333;
+}
+
+.brand-profile-header h2 {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  color: #888;
+  font-size: 1.5rem;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+  background: #333;
+  color: white;
+}
+
+.brand-profile-content {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.brand-section {
+  background: #0a0a0a;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.brand-section h3 {
+  color: white;
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0 0 1.5rem 0;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.form-group label {
+  display: block;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input {
+  width: 100%;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 0.75rem;
+  color: white;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #EC4899;
+  box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.1);
+}
+
+.form-group input::placeholder {
+  color: #666;
+}
+
+.website-input {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.website-input input {
+  flex: 1;
+}
+
+.analyze-btn {
+  background: #EC4899;
+  border: none;
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.analyze-btn:hover:not(:disabled) {
+  background: #db2777;
+  transform: translateY(-1px);
+}
+
+.analyze-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.brand-element {
+  margin-bottom: 1.5rem;
+}
+
+.brand-element:last-child {
+  margin-bottom: 0;
+}
+
+.brand-element h4 {
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem 0;
+}
+
+.brand-logo {
+  max-width: 200px;
+  max-height: 80px;
+  object-fit: contain;
+  background: white;
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+
+.color-palette {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.color-swatch {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  border: 2px solid #333;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.color-swatch:hover {
+  transform: scale(1.1);
+}
+
+.brand-element p {
+  color: #ccc;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.upload-area {
+  text-align: center;
+  padding: 2rem;
+  border: 2px dashed #333;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+.upload-btn {
+  background: linear-gradient(135deg, #8b5cf6, #EC4899);
+  border: none;
+  color: white;
+  padding: 0.875rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  margin-bottom: 0.5rem;
+}
+
+.upload-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+}
+
+.upload-hint {
+  color: #888;
+  font-size: 0.875rem;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.uploaded-files-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 0.75rem;
+}
+
+.file-name {
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.remove-file-btn {
+  background: transparent;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  font-size: 1.25rem;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.remove-file-btn:hover {
+  background: #333;
+  color: #EC4899;
+}
+
+.brand-profile-footer {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  padding: 1rem 2rem 2rem 2rem;
+  border-top: 1px solid #333;
+}
+
+.save-btn {
+  background: linear-gradient(135deg, #10B981, #059669);
+  border: none;
+  color: white;
+  padding: 0.875rem 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.save-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+}
+
+.cancel-btn {
+  background: transparent;
+  border: 1px solid #333;
+  color: #888;
+  padding: 0.875rem 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.cancel-btn:hover {
+  border-color: #555;
+  color: white;
+  background: #111;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .brand-profile-modal {
+    margin: 1rem;
+    max-height: calc(100vh - 2rem);
+  }
+  
+  .brand-profile-header,
+  .brand-profile-content,
+  .brand-profile-footer {
+    padding: 1rem;
+  }
+  
+  .website-input {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .brand-profile-footer {
+    flex-direction: column;
+  }
+}
