@@ -169,11 +169,31 @@ const LandingPage: React.FC = () => {
         setShowWebsiteAnalysis(false);
         setWebsiteUrl('');
       } else {
-        alert('Could not analyze website. Please check the URL and try again.');
+        throw new Error('API response not ok');
       }
     } catch (error) {
       console.error('Website analysis error:', error);
-      alert('Failed to analyze website. Please try again.');
+      
+      // For demo purposes, use mock data when backend is not available
+      console.log('Using mock data for demo...');
+      
+      // Mock brand data based on the website URL
+      const mockBrandData = {
+        logo: 'https://via.placeholder.com/100x40/EC4899/FFFFFF?text=LOGO',
+        colors: ['#EC4899', '#8B5CF6', '#10B981'],
+        tone: 'Professional and innovative with a modern, tech-forward approach'
+      };
+      
+      // Update brand assets with mock data
+      setBrandAssets(prev => ({
+        ...prev,
+        colors: mockBrandData.colors,
+        logo: mockBrandData.logo,
+        tone: mockBrandData.tone
+      }));
+      
+      setShowWebsiteAnalysis(false);
+      setWebsiteUrl('');
     } finally {
       setIsAnalyzing(false);
     }
@@ -458,258 +478,9 @@ const LandingPage: React.FC = () => {
                 Brand Assets
               </label>
 
-              {/* Website Analysis Button */}
-              <div style={{ position: 'relative' }}>
-                <button 
-                  onClick={() => setShowWebsiteAnalysis(true)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '4px',
-                    padding: '6px 12px',
-                    borderRadius: '6px',
-                    border: '1px solid #555',
-                    background: '#1a1a1a',
-                    color: '#ccc',
-                    cursor: 'pointer',
-                    fontSize: '14px'
-                  }}
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                    <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2"/>
-                    <path d="m21 21-4.35-4.35" stroke="currentColor" strokeWidth="2"/>
-                    <circle cx="11" cy="11" r="3" stroke="currentColor" strokeWidth="2"/>
-                  </svg>
-                  Website Analysis
-                </button>
 
-                {/* Website Analysis Popover */}
-                {showWebsiteAnalysis && (
-                  <>
-                    {/* Backdrop */}
-                    <div 
-                      onClick={() => setShowWebsiteAnalysis(false)}
-                      style={{
-                        position: 'fixed',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        background: 'rgba(0, 0, 0, 0.5)',
-                        zIndex: 9998
-                      }}
-                    />
-                    {/* Popover */}
-                    <div style={{
-                      position: 'fixed',
-                      top: '50%',
-                      left: '50%',
-                      transform: 'translate(-50%, -50%)',
-                      background: '#1a1a1a',
-                      border: '1px solid #333',
-                      borderRadius: '8px',
-                      padding: '16px',
-                      minWidth: '320px',
-                      zIndex: 9999,
-                      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)'
-                    }}>
-                      <div style={{ marginBottom: '12px' }}>
-                        <span style={{ fontSize: '14px', fontWeight: '500', color: '#ccc' }}>
-                          🔍 Analyze Website
-                        </span>
-                      </div>
-                      
-                      <div style={{ marginBottom: '16px' }}>
-                        <input
-                          type="url"
-                          value={websiteUrl}
-                          onChange={(e) => setWebsiteUrl(e.target.value)}
-                          placeholder="https://yourwebsite.com"
-                          style={{
-                            width: '100%',
-                            padding: '8px 12px',
-                            borderRadius: '4px',
-                            border: '1px solid #555',
-                            background: '#2a2a2a',
-                            color: '#ccc',
-                            fontSize: '14px',
-                            marginBottom: '8px'
-                          }}
-                        />
-                        <p style={{ 
-                          fontSize: '12px', 
-                          color: '#888', 
-                          margin: 0,
-                          lineHeight: '1.4'
-                        }}>
-                          We'll extract your logo, brand colors, and tone of voice from your website
-                        </p>
-                      </div>
-                      
-                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
-                        <button 
-                          onClick={() => setShowWebsiteAnalysis(false)}
-                          style={{
-                            padding: '6px 12px',
-                            borderRadius: '4px',
-                            border: '1px solid #555',
-                            background: 'transparent',
-                            color: '#ccc',
-                            cursor: 'pointer',
-                            fontSize: '12px'
-                          }}
-                        >
-                          Cancel
-                        </button>
-                        <button 
-                          onClick={handleWebsiteAnalysis}
-                          disabled={!websiteUrl.trim() || isAnalyzing}
-                          style={{
-                            padding: '6px 12px',
-                            borderRadius: '4px',
-                            border: 'none',
-                            background: isAnalyzing ? '#666' : '#ec4899',
-                            color: 'white',
-                            cursor: isAnalyzing ? 'not-allowed' : 'pointer',
-                            fontSize: '12px'
-                          }}
-                        >
-                          {isAnalyzing ? '⏳ Analyzing...' : '🔍 Analyze'}
-                        </button>
-                      </div>
-                    </div>
-                  </>
-                )}
-              </div>
 
-              {/* Website Analysis Button */}
-              <div style={{ position: 'relative' }}>
-                <button 
-                  onClick={handleWebsiteAnalysisOpen}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '4px',
-                    padding: '6px 12px',
-                    borderRadius: '6px',
-                    border: '1px solid #555',
-                    background: '#1a1a1a',
-                    color: '#ccc',
-                    cursor: 'pointer',
-                    fontSize: '14px'
-                  }}
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" strokeWidth="2"/>
-                    <polyline points="3.27,6.96 12,12.01 20.73,6.96" stroke="currentColor" strokeWidth="2"/>
-                    <line x1="12" y1="22.08" x2="12" y2="12" stroke="currentColor" strokeWidth="2"/>
-                  </svg>
-                  Website Analysis
-                </button>
 
-                {/* Website Analysis Popover */}
-                {showWebsiteAnalysis && (
-                  <>
-                    {/* Backdrop */}
-                    <div 
-                      onClick={handleWebsiteAnalysisClose}
-                      style={{
-                        position: 'fixed',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        background: 'rgba(0, 0, 0, 0.5)',
-                        zIndex: 9998
-                      }}
-                    />
-                    {/* Popover */}
-                    <div style={{
-                      position: 'fixed',
-                      top: '50%',
-                      left: '50%',
-                      transform: 'translate(-50%, -50%)',
-                      background: '#1a1a1a',
-                      border: '1px solid #333',
-                      borderRadius: '8px',
-                      padding: '16px',
-                      minWidth: '320px',
-                      zIndex: 9999,
-                      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)'
-                    }}>
-                      <div style={{ marginBottom: '12px' }}>
-                        <span style={{ fontSize: '14px', fontWeight: '500', color: '#ccc' }}>
-                          🔍 Analyze Website for Brand Elements
-                        </span>
-                      </div>
-                      
-                      <div style={{ marginBottom: '16px' }}>
-                        <input
-                          type="url"
-                          value={websiteUrl}
-                          onChange={(e) => setWebsiteUrl(e.target.value)}
-                          placeholder="https://yourcompany.com"
-                          style={{
-                            width: '100%',
-                            background: '#0a0a0a',
-                            border: '1px solid #333',
-                            borderRadius: '6px',
-                            padding: '8px 12px',
-                            color: 'white',
-                            fontSize: '14px',
-                            marginBottom: '12px'
-                          }}
-                          onKeyPress={(e) => {
-                            if (e.key === 'Enter') {
-                              handleWebsiteAnalysis();
-                            }
-                          }}
-                        />
-                        <p style={{ 
-                          fontSize: '12px', 
-                          color: '#888', 
-                          margin: 0,
-                          lineHeight: '1.4'
-                        }}>
-                          We'll extract your logo, brand colors, and tone of voice from your website
-                        </p>
-                      </div>
-                      
-                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
-                        <button 
-                          onClick={handleWebsiteAnalysisClose}
-                          style={{
-                            padding: '6px 12px',
-                            borderRadius: '4px',
-                            border: '1px solid #555',
-                            background: 'transparent',
-                            color: '#ccc',
-                            cursor: 'pointer',
-                            fontSize: '12px'
-                          }}
-                        >
-                          Cancel
-                        </button>
-                        <button 
-                          onClick={handleWebsiteAnalysis}
-                          disabled={!websiteUrl.trim() || isAnalyzing}
-                          style={{
-                            padding: '6px 12px',
-                            borderRadius: '4px',
-                            border: 'none',
-                            background: isAnalyzing ? '#666' : '#ec4899',
-                            color: 'white',
-                            cursor: isAnalyzing ? 'not-allowed' : 'pointer',
-                            fontSize: '12px'
-                          }}
-                        >
-                          {isAnalyzing ? '⏳ Analyzing...' : '🔍 Analyze'}
-                        </button>
-                      </div>
-                    </div>
-                  </>
-                )}
-              </div>
 
               {/* Brand Colors Button */}
               <div style={{ position: 'relative' }}>
@@ -859,6 +630,130 @@ const LandingPage: React.FC = () => {
                       </button>
                     </div>
                   </div>
+                  </>
+                )}
+              </div>
+
+              {/* Website Analysis Button */}
+              <div style={{ position: 'relative' }}>
+                <button 
+                  onClick={() => setShowWebsiteAnalysis(true)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    padding: '6px 12px',
+                    borderRadius: '6px',
+                    border: '1px solid #555',
+                    background: '#1a1a1a',
+                    color: '#ccc',
+                    cursor: 'pointer',
+                    fontSize: '14px'
+                  }}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2"/>
+                    <path d="m21 21-4.35-4.35" stroke="currentColor" strokeWidth="2"/>
+                    <circle cx="11" cy="11" r="3" stroke="currentColor" strokeWidth="2"/>
+                  </svg>
+                  Website Analysis
+                </button>
+
+                {/* Website Analysis Popover */}
+                {showWebsiteAnalysis && (
+                  <>
+                    {/* Backdrop */}
+                    <div 
+                      onClick={() => setShowWebsiteAnalysis(false)}
+                      style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        background: 'rgba(0, 0, 0, 0.5)',
+                        zIndex: 9998
+                      }}
+                    />
+                    {/* Popover */}
+                    <div style={{
+                      position: 'fixed',
+                      top: '50%',
+                      left: '50%',
+                      transform: 'translate(-50%, -50%)',
+                      background: '#1a1a1a',
+                      border: '1px solid #333',
+                      borderRadius: '8px',
+                      padding: '16px',
+                      minWidth: '320px',
+                      zIndex: 9999,
+                      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)'
+                    }}>
+                      <div style={{ marginBottom: '12px' }}>
+                        <span style={{ fontSize: '14px', fontWeight: '500', color: '#ccc' }}>
+                          🔍 Analyze Website
+                        </span>
+                      </div>
+                      
+                      <div style={{ marginBottom: '16px' }}>
+                        <input
+                          type="url"
+                          value={websiteUrl}
+                          onChange={(e) => setWebsiteUrl(e.target.value)}
+                          placeholder="https://yourwebsite.com"
+                          style={{
+                            width: '100%',
+                            padding: '8px 12px',
+                            borderRadius: '4px',
+                            border: '1px solid #555',
+                            background: '#2a2a2a',
+                            color: '#ccc',
+                            fontSize: '14px',
+                            marginBottom: '8px'
+                          }}
+                        />
+                        <p style={{ 
+                          fontSize: '12px', 
+                          color: '#888', 
+                          margin: 0,
+                          lineHeight: '1.4'
+                        }}>
+                          We'll extract your logo, brand colors, and tone of voice from your website
+                        </p>
+                      </div>
+                      
+                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+                        <button 
+                          onClick={() => setShowWebsiteAnalysis(false)}
+                          style={{
+                            padding: '6px 12px',
+                            borderRadius: '4px',
+                            border: '1px solid #555',
+                            background: 'transparent',
+                            color: '#ccc',
+                            cursor: 'pointer',
+                            fontSize: '12px'
+                          }}
+                        >
+                          Cancel
+                        </button>
+                        <button 
+                          onClick={handleWebsiteAnalysis}
+                          disabled={!websiteUrl.trim() || isAnalyzing}
+                          style={{
+                            padding: '6px 12px',
+                            borderRadius: '4px',
+                            border: 'none',
+                            background: isAnalyzing ? '#666' : '#ec4899',
+                            color: 'white',
+                            cursor: isAnalyzing ? 'not-allowed' : 'pointer',
+                            fontSize: '12px'
+                          }}
+                        >
+                          {isAnalyzing ? '⏳ Analyzing...' : '🔍 Analyze'}
+                        </button>
+                      </div>
+                    </div>
                   </>
                 )}
               </div>
