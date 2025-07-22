@@ -13,10 +13,17 @@ const LandingPage: React.FC = () => {
   const [brandAssets, setBrandAssets] = useState({
     colors: [] as string[],
     fonts: [] as string[],
-    logos: [] as File[]
+    logos: [] as File[],
+    logo: undefined as string | undefined,
+    tone: undefined as string | undefined
   });
   const [showColorPopover, setShowColorPopover] = useState(false);
   const [tempColors, setTempColors] = useState<string[]>([]);
+  const [showWebsiteAnalysis, setShowWebsiteAnalysis] = useState(false);
+  const [websiteUrl, setWebsiteUrl] = useState('');
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+
+
 
   const suggestionPills = [
     'Facebook Ad Generator',
@@ -132,6 +139,53 @@ const LandingPage: React.FC = () => {
     // Navigate to existing chat or create new one
     setShowChatInterface(true);
     setCurrentPrompt(inputValue || 'Continue our conversation');
+  };
+
+  const handleWebsiteAnalysis = async () => {
+    if (!websiteUrl.trim()) return;
+    
+    setIsAnalyzing(true);
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/brand/analyze`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ website: websiteUrl }),
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        const scrapedData = data.brandData;
+        
+        // Update brand assets with scraped data
+        setBrandAssets(prev => ({
+          ...prev,
+          colors: scrapedData.colors || prev.colors,
+          logo: scrapedData.logo,
+          tone: scrapedData.tone
+        }));
+        
+        setShowWebsiteAnalysis(false);
+        setWebsiteUrl('');
+      } else {
+        alert('Could not analyze website. Please check the URL and try again.');
+      }
+    } catch (error) {
+      console.error('Website analysis error:', error);
+      alert('Failed to analyze website. Please try again.');
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
+  const handleWebsiteAnalysisOpen = () => {
+    setShowWebsiteAnalysis(true);
+  };
+
+  const handleWebsiteAnalysisClose = () => {
+    setShowWebsiteAnalysis(false);
+    setWebsiteUrl('');
   };
 
   const removeUploadedFile = (index: number) => {
@@ -404,6 +458,259 @@ const LandingPage: React.FC = () => {
                 Brand Assets
               </label>
 
+              {/* Website Analysis Button */}
+              <div style={{ position: 'relative' }}>
+                <button 
+                  onClick={() => setShowWebsiteAnalysis(true)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    padding: '6px 12px',
+                    borderRadius: '6px',
+                    border: '1px solid #555',
+                    background: '#1a1a1a',
+                    color: '#ccc',
+                    cursor: 'pointer',
+                    fontSize: '14px'
+                  }}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2"/>
+                    <path d="m21 21-4.35-4.35" stroke="currentColor" strokeWidth="2"/>
+                    <circle cx="11" cy="11" r="3" stroke="currentColor" strokeWidth="2"/>
+                  </svg>
+                  Website Analysis
+                </button>
+
+                {/* Website Analysis Popover */}
+                {showWebsiteAnalysis && (
+                  <>
+                    {/* Backdrop */}
+                    <div 
+                      onClick={() => setShowWebsiteAnalysis(false)}
+                      style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        background: 'rgba(0, 0, 0, 0.5)',
+                        zIndex: 9998
+                      }}
+                    />
+                    {/* Popover */}
+                    <div style={{
+                      position: 'fixed',
+                      top: '50%',
+                      left: '50%',
+                      transform: 'translate(-50%, -50%)',
+                      background: '#1a1a1a',
+                      border: '1px solid #333',
+                      borderRadius: '8px',
+                      padding: '16px',
+                      minWidth: '320px',
+                      zIndex: 9999,
+                      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)'
+                    }}>
+                      <div style={{ marginBottom: '12px' }}>
+                        <span style={{ fontSize: '14px', fontWeight: '500', color: '#ccc' }}>
+                          🔍 Analyze Website
+                        </span>
+                      </div>
+                      
+                      <div style={{ marginBottom: '16px' }}>
+                        <input
+                          type="url"
+                          value={websiteUrl}
+                          onChange={(e) => setWebsiteUrl(e.target.value)}
+                          placeholder="https://yourwebsite.com"
+                          style={{
+                            width: '100%',
+                            padding: '8px 12px',
+                            borderRadius: '4px',
+                            border: '1px solid #555',
+                            background: '#2a2a2a',
+                            color: '#ccc',
+                            fontSize: '14px',
+                            marginBottom: '8px'
+                          }}
+                        />
+                        <p style={{ 
+                          fontSize: '12px', 
+                          color: '#888', 
+                          margin: 0,
+                          lineHeight: '1.4'
+                        }}>
+                          We'll extract your logo, brand colors, and tone of voice from your website
+                        </p>
+                      </div>
+                      
+                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+                        <button 
+                          onClick={() => setShowWebsiteAnalysis(false)}
+                          style={{
+                            padding: '6px 12px',
+                            borderRadius: '4px',
+                            border: '1px solid #555',
+                            background: 'transparent',
+                            color: '#ccc',
+                            cursor: 'pointer',
+                            fontSize: '12px'
+                          }}
+                        >
+                          Cancel
+                        </button>
+                        <button 
+                          onClick={handleWebsiteAnalysis}
+                          disabled={!websiteUrl.trim() || isAnalyzing}
+                          style={{
+                            padding: '6px 12px',
+                            borderRadius: '4px',
+                            border: 'none',
+                            background: isAnalyzing ? '#666' : '#ec4899',
+                            color: 'white',
+                            cursor: isAnalyzing ? 'not-allowed' : 'pointer',
+                            fontSize: '12px'
+                          }}
+                        >
+                          {isAnalyzing ? '⏳ Analyzing...' : '🔍 Analyze'}
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* Website Analysis Button */}
+              <div style={{ position: 'relative' }}>
+                <button 
+                  onClick={handleWebsiteAnalysisOpen}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    padding: '6px 12px',
+                    borderRadius: '6px',
+                    border: '1px solid #555',
+                    background: '#1a1a1a',
+                    color: '#ccc',
+                    cursor: 'pointer',
+                    fontSize: '14px'
+                  }}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" strokeWidth="2"/>
+                    <polyline points="3.27,6.96 12,12.01 20.73,6.96" stroke="currentColor" strokeWidth="2"/>
+                    <line x1="12" y1="22.08" x2="12" y2="12" stroke="currentColor" strokeWidth="2"/>
+                  </svg>
+                  Website Analysis
+                </button>
+
+                {/* Website Analysis Popover */}
+                {showWebsiteAnalysis && (
+                  <>
+                    {/* Backdrop */}
+                    <div 
+                      onClick={handleWebsiteAnalysisClose}
+                      style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        background: 'rgba(0, 0, 0, 0.5)',
+                        zIndex: 9998
+                      }}
+                    />
+                    {/* Popover */}
+                    <div style={{
+                      position: 'fixed',
+                      top: '50%',
+                      left: '50%',
+                      transform: 'translate(-50%, -50%)',
+                      background: '#1a1a1a',
+                      border: '1px solid #333',
+                      borderRadius: '8px',
+                      padding: '16px',
+                      minWidth: '320px',
+                      zIndex: 9999,
+                      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)'
+                    }}>
+                      <div style={{ marginBottom: '12px' }}>
+                        <span style={{ fontSize: '14px', fontWeight: '500', color: '#ccc' }}>
+                          🔍 Analyze Website for Brand Elements
+                        </span>
+                      </div>
+                      
+                      <div style={{ marginBottom: '16px' }}>
+                        <input
+                          type="url"
+                          value={websiteUrl}
+                          onChange={(e) => setWebsiteUrl(e.target.value)}
+                          placeholder="https://yourcompany.com"
+                          style={{
+                            width: '100%',
+                            background: '#0a0a0a',
+                            border: '1px solid #333',
+                            borderRadius: '6px',
+                            padding: '8px 12px',
+                            color: 'white',
+                            fontSize: '14px',
+                            marginBottom: '12px'
+                          }}
+                          onKeyPress={(e) => {
+                            if (e.key === 'Enter') {
+                              handleWebsiteAnalysis();
+                            }
+                          }}
+                        />
+                        <p style={{ 
+                          fontSize: '12px', 
+                          color: '#888', 
+                          margin: 0,
+                          lineHeight: '1.4'
+                        }}>
+                          We'll extract your logo, brand colors, and tone of voice from your website
+                        </p>
+                      </div>
+                      
+                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+                        <button 
+                          onClick={handleWebsiteAnalysisClose}
+                          style={{
+                            padding: '6px 12px',
+                            borderRadius: '4px',
+                            border: '1px solid #555',
+                            background: 'transparent',
+                            color: '#ccc',
+                            cursor: 'pointer',
+                            fontSize: '12px'
+                          }}
+                        >
+                          Cancel
+                        </button>
+                        <button 
+                          onClick={handleWebsiteAnalysis}
+                          disabled={!websiteUrl.trim() || isAnalyzing}
+                          style={{
+                            padding: '6px 12px',
+                            borderRadius: '4px',
+                            border: 'none',
+                            background: isAnalyzing ? '#666' : '#ec4899',
+                            color: 'white',
+                            cursor: isAnalyzing ? 'not-allowed' : 'pointer',
+                            fontSize: '12px'
+                          }}
+                        >
+                          {isAnalyzing ? '⏳ Analyzing...' : '🔍 Analyze'}
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+
               {/* Brand Colors Button */}
               <div style={{ position: 'relative' }}>
                 <button 
@@ -578,9 +885,119 @@ const LandingPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Uploaded Files Summary */}
-        {(uploadedFiles.length > 0 || brandAssets.logos.length > 0 || brandAssets.colors.length > 0) && (
+        {/* Brand Data & Files Summary */}
+        {(uploadedFiles.length > 0 || brandAssets.logos.length > 0 || brandAssets.colors.length > 0 || brandAssets.logo || brandAssets.tone) && (
           <div style={{ marginTop: '16px', marginBottom: '16px' }}>
+            
+            {/* Scraped Brand Data */}
+            {(brandAssets.logo || brandAssets.tone || brandAssets.colors.length > 0) && (
+              <div style={{ marginBottom: '16px' }}>
+                <div style={{
+                  background: 'linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(139, 92, 246, 0.1))',
+                  border: '1px solid rgba(236, 72, 153, 0.3)',
+                  borderRadius: '12px',
+                  padding: '16px',
+                  marginBottom: '12px'
+                }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    marginBottom: '12px'
+                  }}>
+                    <span style={{ fontSize: '16px' }}>✨</span>
+                    <span style={{ fontSize: '14px', fontWeight: '600', color: '#ec4899' }}>
+                      Brand Elements Extracted
+                    </span>
+                  </div>
+                  
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'center' }}>
+                    {/* Logo */}
+                    {brandAssets.logo && (
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        background: '#1a1a1a',
+                        border: '1px solid #333',
+                        padding: '8px 12px',
+                        borderRadius: '8px'
+                      }}>
+                        <img 
+                          src={brandAssets.logo} 
+                          alt="Brand logo" 
+                          style={{
+                            width: '24px',
+                            height: '24px',
+                            objectFit: 'contain',
+                            background: 'white',
+                            borderRadius: '4px',
+                            padding: '2px'
+                          }}
+                        />
+                        <span style={{ fontSize: '12px', color: '#ccc' }}>Logo</span>
+                      </div>
+                    )}
+                    
+                    {/* Colors */}
+                    {brandAssets.colors.length > 0 && (
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        background: '#1a1a1a',
+                        border: '1px solid #333',
+                        padding: '8px 12px',
+                        borderRadius: '8px'
+                      }}>
+                        <div style={{ display: 'flex', gap: '4px' }}>
+                          {brandAssets.colors.slice(0, 3).map((color, index) => (
+                            <div
+                              key={index}
+                              style={{
+                                width: '16px',
+                                height: '16px',
+                                backgroundColor: color,
+                                borderRadius: '3px',
+                                border: '1px solid #333'
+                              }}
+                            />
+                          ))}
+                        </div>
+                        <span style={{ fontSize: '12px', color: '#ccc' }}>
+                          {brandAssets.colors.length} Color{brandAssets.colors.length > 1 ? 's' : ''}
+                        </span>
+                      </div>
+                    )}
+                    
+                    {/* Tone */}
+                    {brandAssets.tone && (
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        background: '#1a1a1a',
+                        border: '1px solid #333',
+                        padding: '8px 12px',
+                        borderRadius: '8px',
+                        maxWidth: '200px'
+                      }}>
+                        <span style={{ fontSize: '12px' }}>💬</span>
+                        <span style={{ 
+                          fontSize: '12px', 
+                          color: '#ccc',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap'
+                        }}>
+                          {brandAssets.tone}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
             {uploadedFiles.length > 0 && (
               <div style={{ marginBottom: '12px' }}>
                 <span style={{ fontSize: '12px', color: '#888', marginBottom: '8px', display: 'block' }}>
