@@ -7,7 +7,7 @@
 
 /* Left Sidebar */
 .chat-sidebar {
-  width: 320px;
+  width: 280px;
   background: #111;
   border-right: 1px solid #333;
   display: flex;
@@ -117,17 +117,39 @@
   font-weight: 500;
 }
 
-/* Right Side - Chat */
+/* Middle - Chat */
 .chat-main {
-  flex: 1;
+  width: 400px;
   display: flex;
   flex-direction: column;
   background: #0a0a0a;
+  border-right: 1px solid #333;
 }
 
 .chat-header {
   padding: 1rem;
   border-bottom: 1px solid #333;
+}
+
+.header-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-info h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+  color: white;
+}
+
+.status-indicator {
+  font-size: 0.75rem;
+  color: #888;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .header-tabs {
@@ -577,8 +599,487 @@
   color: #888;
 }
 
+/* Right Side - Canvas/Output */
+.canvas-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #0a0a0a;
+  overflow-y: auto;
+}
+
+.canvas-header {
+  padding: 1rem;
+  border-bottom: 1px solid #333;
+}
+
+.canvas-tabs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.canvas-tab {
+  background: transparent;
+  border: 1px solid #333;
+  color: #888;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.canvas-tab.active {
+  background: #1a1a1a;
+  color: white;
+  border-color: #555;
+}
+
+.canvas-tab:hover:not(.active) {
+  border-color: #555;
+  color: #ccc;
+}
+
+.canvas-content {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.canvas-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 400px;
+}
+
+.loading-animation {
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid #333;
+  border-top: 3px solid #EC4899;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1.5rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-animation h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: white;
+  margin: 0 0 0.5rem 0;
+}
+
+.loading-animation p {
+  font-size: 0.875rem;
+  color: #888;
+  margin: 0;
+}
+
+.campaign-output {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.output-section {
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.output-section h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: white;
+  margin: 0 0 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.campaign-card {
+  background: #0a0a0a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.campaign-type {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #EC4899;
+  margin-bottom: 1rem;
+}
+
+.campaign-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label {
+  font-size: 0.875rem;
+  color: #888;
+}
+
+.value {
+  font-size: 0.875rem;
+  color: white;
+  font-weight: 500;
+}
+
+.content-preview {
+  background: #0a0a0a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+/* Facebook Ad Preview */
+.facebook-ad-preview {
+  max-width: 400px;
+  background: #1a1a1a;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.ad-header {
+  padding: 0.75rem;
+  border-bottom: 1px solid #333;
+}
+
+.brand-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brand-avatar {
+  width: 32px;
+  height: 32px;
+  background: #EC4899;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+}
+
+.brand-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: white;
+}
+
+.sponsored {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+.ad-content {
+  padding: 0.75rem;
+}
+
+.ad-text {
+  font-size: 0.875rem;
+  color: #ccc;
+  line-height: 1.4;
+  margin-bottom: 0.75rem;
+}
+
+.ad-image-placeholder {
+  background: #333;
+  border: 1px dashed #555;
+  border-radius: 6px;
+  padding: 2rem;
+  text-align: center;
+  color: #888;
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+}
+
+.cta-button {
+  background: #EC4899;
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* Google Ad Preview */
+.google-ad-preview {
+  max-width: 500px;
+}
+
+.display-ad {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.ad-headline {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #4285f4;
+  margin-bottom: 0.5rem;
+}
+
+.ad-description {
+  font-size: 0.875rem;
+  color: #ccc;
+  line-height: 1.4;
+  margin-bottom: 0.75rem;
+}
+
+.ad-visual-placeholder {
+  background: #333;
+  border: 1px dashed #555;
+  border-radius: 6px;
+  padding: 1.5rem;
+  text-align: center;
+  color: #888;
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+}
+
+.ad-url {
+  font-size: 0.75rem;
+  color: #34a853;
+}
+
+/* LinkedIn Carousel Preview */
+.linkedin-carousel-preview {
+  max-width: 400px;
+}
+
+.carousel-slide {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.slide-number {
+  font-size: 0.75rem;
+  color: #888;
+  margin-bottom: 0.75rem;
+}
+
+.slide-content h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  margin: 0 0 0.5rem 0;
+}
+
+.slide-content p {
+  font-size: 0.875rem;
+  color: #ccc;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.carousel-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.carousel-navigation button {
+  background: #333;
+  border: 1px solid #555;
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.carousel-navigation span {
+  font-size: 0.875rem;
+  color: #888;
+}
+
+/* Instagram Reel Preview */
+.instagram-reel-preview {
+  max-width: 500px;
+}
+
+.reel-script {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.script-section {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #333;
+}
+
+.script-section:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.timestamp {
+  font-size: 0.75rem;
+  color: #EC4899;
+  font-weight: 600;
+  min-width: 50px;
+}
+
+.script-content {
+  flex: 1;
+  font-size: 0.875rem;
+  color: #ccc;
+  line-height: 1.4;
+}
+
+.script-content strong {
+  color: white;
+}
+
+/* Generic Campaign Preview */
+.generic-campaign-preview {
+  max-width: 600px;
+}
+
+.campaign-elements {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.element-card {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.element-card h4 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: white;
+  margin: 0 0 0.5rem 0;
+}
+
+.element-card p {
+  font-size: 0.75rem;
+  color: #888;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Next Steps */
+.next-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.step-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: #0a0a0a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 1rem;
+  transition: all 0.2s ease;
+}
+
+.step-card:hover {
+  border-color: #555;
+  background: #111;
+}
+
+.step-icon {
+  font-size: 1.5rem;
+  min-width: 40px;
+  text-align: center;
+}
+
+.step-content {
+  flex: 1;
+}
+
+.step-content h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  margin: 0 0 0.5rem 0;
+}
+
+.step-content p {
+  font-size: 0.875rem;
+  color: #888;
+  line-height: 1.4;
+  margin: 0 0 0.75rem 0;
+}
+
+.step-button {
+  background: transparent;
+  border: 1px solid #333;
+  color: #ccc;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.step-button:hover {
+  border-color: #555;
+  color: white;
+  background: #1a1a1a;
+}
+
+.step-button.primary {
+  background: #EC4899;
+  border-color: #EC4899;
+  color: white;
+}
+
+.step-button.primary:hover {
+  background: #d63384;
+  border-color: #d63384;
+  transform: translateY(-1px);
+}
+
 /* Mobile Responsiveness */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .chat-interface {
     flex-direction: column;
   }
@@ -589,6 +1090,18 @@
     max-height: 200px;
   }
   
+  .chat-main {
+    width: 100%;
+    height: 400px;
+  }
+  
+  .canvas-area {
+    height: auto;
+    min-height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
   .context-section {
     padding: 0.75rem;
   }
@@ -600,5 +1113,13 @@
   .user-message,
   .assistant-message {
     max-width: 90%;
+  }
+  
+  .canvas-content {
+    padding: 1rem;
+  }
+  
+  .campaign-elements {
+    grid-template-columns: 1fr;
   }
 }

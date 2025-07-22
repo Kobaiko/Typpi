@@ -5,10 +5,16 @@ interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
   onAuthSuccess: () => void;
+  initialMode?: 'signin' | 'signup';
 }
 
-const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess }) => {
-  const [isSignUp, setIsSignUp] = useState(false);
+const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess, initialMode = 'signup' }) => {
+  const [isSignUp, setIsSignUp] = useState(initialMode === 'signup');
+  
+  // Reset form state only when mode changes, not when modal reopens
+  React.useEffect(() => {
+    setIsSignUp(initialMode === 'signup');
+  }, [initialMode]);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -63,13 +69,25 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess })
     
     setIsScrapingWebsite(true);
     try {
-      // Call backend to scrape website and extract brand data
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/brand/analyze`, {
+      // Check if backend is available
+      const apiUrl = process.env.REACT_APP_API_BASE_URL;
+      if (!apiUrl) {
+        throw new Error('API URL not configured');
+      }
+
+      // Call backend to scrape website and extract brand data including logo
+      const response = await fetch(`${apiUrl}/brand/analyze`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ website }),
+        body: JSON.stringify({ 
+          website,
+          extractLogo: true,
+          extractColors: true,
+          extractFonts: true,
+          company: company
+        }),
       });
       
       if (response.ok) {
@@ -77,11 +95,98 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess })
         setBrandData(data);
         setShowBrandPreview(true);
       } else {
-        alert('Could not analyze website. Please check the URL and try again.');
+        // Fallback: Try to extract basic brand info including favicon
+        console.warn('Backend response failed, attempting basic extraction');
+        
+        let logoUrl: string | null = null;
+        try {
+          // Try to get favicon as logo fallback
+          const domain = new URL(website).origin;
+          logoUrl = `${domain}/favicon.ico`;
+          
+          // Test if favicon exists
+          const faviconTest = new Image();
+          faviconTest.onload = () => {
+            setBrandData((prev: any) => prev ? { ...prev, logo: logoUrl } : prev);
+          };
+          faviconTest.onerror = () => {
+            // Try common logo paths
+            const commonLogoPaths = ['/logo.png', '/logo.svg', '/assets/logo.png', '/images/logo.png'];
+            for (const path of commonLogoPaths) {
+              const testUrl = `${domain}${path}`;
+              const logoTest = new Image();
+              logoTest.onload = () => {
+                setBrandData((prev: any) => prev ? { ...prev, logo: testUrl } : prev);
+                return;
+              };
+              logoTest.src = testUrl;
+            }
+          };
+          faviconTest.src = logoUrl;
+        } catch (e) {
+          console.warn('Could not extract logo from website');
+        }
+
+        const mockBrandData = {
+          name: company || 'Your Company',
+          colors: ['#EC4899', '#8B5CF6', '#10B981'],
+          fonts: ['Inter', 'Roboto'],
+          logo: logoUrl,
+          description: `AI-powered marketing platform for ${company || 'your business'}`,
+          industry: 'Technology',
+          tone: 'Professional and innovative',
+          website: website
+        };
+        setBrandData(mockBrandData);
+        setShowBrandPreview(true);
       }
     } catch (error) {
       console.error('Website scraping error:', error);
-      alert('Failed to analyze website. Please try again.');
+      
+      // Fallback: Try to extract basic brand info including favicon
+      console.warn('Backend not available, attempting basic extraction');
+      
+      let logoUrl: string | null = null;
+      try {
+        // Try to get favicon as logo fallback
+        const domain = new URL(website).origin;
+        logoUrl = `${domain}/favicon.ico`;
+        
+        // Test if favicon exists
+        const faviconTest = new Image();
+        faviconTest.onload = () => {
+          setBrandData((prev: any) => prev ? { ...prev, logo: logoUrl } : prev);
+        };
+        faviconTest.onerror = () => {
+          // Try common logo paths
+          const commonLogoPaths = ['/logo.png', '/logo.svg', '/assets/logo.png', '/images/logo.png'];
+          for (const path of commonLogoPaths) {
+            const testUrl = `${domain}${path}`;
+            const logoTest = new Image();
+            logoTest.onload = () => {
+              setBrandData((prev: any) => prev ? { ...prev, logo: testUrl } : prev);
+              return;
+            };
+            logoTest.src = testUrl;
+          }
+        };
+        faviconTest.src = logoUrl;
+      } catch (e) {
+        console.warn('Could not extract logo from website');
+      }
+
+      const mockBrandData = {
+        name: company || 'Your Company',
+        colors: ['#EC4899', '#8B5CF6', '#10B981'],
+        fonts: ['Inter', 'Roboto'],
+        logo: logoUrl,
+        description: `AI-powered marketing platform for ${company || 'your business'}`,
+        industry: 'Technology',
+        tone: 'Professional and innovative',
+        website: website
+      };
+      setBrandData(mockBrandData);
+      setShowBrandPreview(true);
     } finally {
       setIsScrapingWebsite(false);
     }

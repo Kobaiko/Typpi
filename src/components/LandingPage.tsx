@@ -6,6 +6,7 @@ const LandingPage: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signup');
   const [showChatInterface, setShowChatInterface] = useState(false);
   const [currentPrompt, setCurrentPrompt] = useState('');
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
@@ -56,6 +57,8 @@ const LandingPage: React.FC = () => {
     if (!inputValue.trim()) return;
     
     if (!isAuthenticated) {
+      // When user submits prompt without being authenticated, show sign-up modal
+      setAuthMode('signup');
       setShowAuthModal(true);
       return;
     }
@@ -67,7 +70,8 @@ const LandingPage: React.FC = () => {
 
   const handleAuthSuccess = () => {
     setIsAuthenticated(true);
-    // After authentication, proceed with the workflow
+    setShowAuthModal(false);
+    // After authentication, proceed with the workflow if there's a prompt
     if (inputValue.trim()) {
       setCurrentPrompt(inputValue);
       setShowChatInterface(true);
@@ -81,10 +85,12 @@ const LandingPage: React.FC = () => {
   };
 
   const handleSignInClick = () => {
+    setAuthMode('signin');
     setShowAuthModal(true);
   };
 
   const handleSignUpClick = () => {
+    setAuthMode('signup');
     setShowAuthModal(true);
   };
 
@@ -708,6 +714,7 @@ const LandingPage: React.FC = () => {
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
         onAuthSuccess={handleAuthSuccess}
+        initialMode={authMode}
       />
 
       <style>{`

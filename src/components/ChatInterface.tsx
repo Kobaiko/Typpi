@@ -348,12 +348,14 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ initialPrompt, onBack }) 
         </div>
       </div>
 
-      {/* Right Side - Chat and Progress */}
+      {/* Middle - Chat */}
       <div className="chat-main">
         <div className="chat-header">
-          <div className="header-tabs">
-            <button className="tab active">Progress</button>
-            <button className="tab">Preview</button>
+          <div className="header-info">
+            <h3>Campaign Builder</h3>
+            <span className="status-indicator">
+              {isProcessing ? '🔄 Building...' : '✅ Ready'}
+            </span>
           </div>
         </div>
 
@@ -496,6 +498,204 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ initialPrompt, onBack }) 
                     </button>
                   </div>
                 ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Right Side - Canvas/Output */}
+      <div className="canvas-area">
+        <div className="canvas-header">
+          <div className="canvas-tabs">
+            <button className="canvas-tab active">Preview</button>
+            <button className="canvas-tab">Export</button>
+          </div>
+        </div>
+        
+        <div className="canvas-content">
+          {isProcessing ? (
+            <div className="canvas-loading">
+              <div className="loading-animation">
+                <div className="loading-spinner"></div>
+                <h3>Creating Your Campaign...</h3>
+                <p>AI is analyzing your requirements and generating content</p>
+              </div>
+            </div>
+          ) : (
+            <div className="campaign-output">
+              <div className="output-section">
+                <h3>🎯 Campaign Overview</h3>
+                <div className="campaign-card">
+                  <div className="campaign-type">
+                    {initialPrompt.toLowerCase().includes('facebook') ? '📘 Facebook Ad Campaign' :
+                     initialPrompt.toLowerCase().includes('google') ? '🔍 Google Display Campaign' :
+                     initialPrompt.toLowerCase().includes('linkedin') ? '💼 LinkedIn Carousel' :
+                     initialPrompt.toLowerCase().includes('instagram') ? '📸 Instagram Reel Script' :
+                     initialPrompt.toLowerCase().includes('email') ? '📧 Email Campaign' :
+                     '🚀 Multi-Platform Campaign'}
+                  </div>
+                  <div className="campaign-details">
+                    <div className="detail-item">
+                      <span className="label">Target Audience:</span>
+                      <span className="value">Marketing professionals, 25-45</span>
+                    </div>
+                    <div className="detail-item">
+                      <span className="label">Budget Range:</span>
+                      <span className="value">$1,000 - $5,000</span>
+                    </div>
+                    <div className="detail-item">
+                      <span className="label">Duration:</span>
+                      <span className="value">2-4 weeks</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="output-section">
+                <h3>📝 Generated Content</h3>
+                <div className="content-preview">
+                  {initialPrompt.toLowerCase().includes('facebook') && (
+                    <div className="facebook-ad-preview">
+                      <div className="ad-header">
+                        <div className="brand-info">
+                          <div className="brand-avatar">B</div>
+                          <div>
+                            <div className="brand-name">Your Brand</div>
+                            <div className="sponsored">Sponsored</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="ad-content">
+                        <div className="ad-text">
+                          🚀 Transform your marketing with AI-powered campaigns that deliver results! 
+                          Get professional-grade ads, landing pages, and content in minutes, not days.
+                        </div>
+                        <div className="ad-image-placeholder">
+                          [Campaign Visual - Generated based on your brand]
+                        </div>
+                        <div className="ad-cta">
+                          <button className="cta-button">Get Started Free</button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {initialPrompt.toLowerCase().includes('google') && (
+                    <div className="google-ad-preview">
+                      <div className="display-ad">
+                        <div className="ad-headline">AI-Powered Marketing Campaigns</div>
+                        <div className="ad-description">
+                          Create professional campaigns in minutes. Get ads, landing pages, and content optimized for your brand.
+                        </div>
+                        <div className="ad-visual-placeholder">
+                          [Display Banner - 728x90]
+                        </div>
+                        <div className="ad-url">yoursite.com</div>
+                      </div>
+                    </div>
+                  )}
+
+                  {initialPrompt.toLowerCase().includes('linkedin') && (
+                    <div className="linkedin-carousel-preview">
+                      <div className="carousel-slide">
+                        <div className="slide-number">Slide 1 of 6</div>
+                        <div className="slide-content">
+                          <h4>🎯 Hook: The Marketing Problem</h4>
+                          <p>Are you spending weeks creating campaigns that underperform?</p>
+                        </div>
+                      </div>
+                      <div className="carousel-navigation">
+                        <button>← Prev</button>
+                        <span>1/6</span>
+                        <button>Next →</button>
+                      </div>
+                    </div>
+                  )}
+
+                  {initialPrompt.toLowerCase().includes('instagram') && (
+                    <div className="instagram-reel-preview">
+                      <div className="reel-script">
+                        <div className="script-section">
+                          <div className="timestamp">0-3s</div>
+                          <div className="script-content">
+                            <strong>Hook:</strong> "Stop wasting time on campaigns that don't convert!"
+                          </div>
+                        </div>
+                        <div className="script-section">
+                          <div className="timestamp">3-10s</div>
+                          <div className="script-content">
+                            <strong>Problem:</strong> Show frustrated marketer at computer
+                          </div>
+                        </div>
+                        <div className="script-section">
+                          <div className="timestamp">10-25s</div>
+                          <div className="script-content">
+                            <strong>Solution:</strong> Demonstrate AI creating perfect campaign
+                          </div>
+                        </div>
+                        <div className="script-section">
+                          <div className="timestamp">25-30s</div>
+                          <div className="script-content">
+                            <strong>CTA:</strong> "Try it free - link in bio!"
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {!initialPrompt.toLowerCase().includes('facebook') && 
+                   !initialPrompt.toLowerCase().includes('google') && 
+                   !initialPrompt.toLowerCase().includes('linkedin') && 
+                   !initialPrompt.toLowerCase().includes('instagram') && (
+                    <div className="generic-campaign-preview">
+                      <div className="campaign-elements">
+                        <div className="element-card">
+                          <h4>📧 Email Sequence</h4>
+                          <p>5-part welcome series with personalized content</p>
+                        </div>
+                        <div className="element-card">
+                          <h4>📱 Social Media Posts</h4>
+                          <p>14 days of engaging content across platforms</p>
+                        </div>
+                        <div className="element-card">
+                          <h4>🎯 Landing Page</h4>
+                          <p>Conversion-optimized page with A/B test variants</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="output-section">
+                <h3>🔧 Next Steps</h3>
+                <div className="next-steps">
+                  <div className="step-card">
+                    <div className="step-icon">🔗</div>
+                    <div className="step-content">
+                      <h4>Connect Your Accounts</h4>
+                      <p>Link Facebook Ads Manager, Google Ads, or other platforms to deploy directly</p>
+                      <button className="step-button">Connect Accounts</button>
+                    </div>
+                  </div>
+                  <div className="step-card">
+                    <div className="step-icon">📊</div>
+                    <div className="step-content">
+                      <h4>Review & Customize</h4>
+                      <p>Fine-tune the generated content to match your brand voice</p>
+                      <button className="step-button">Customize Content</button>
+                    </div>
+                  </div>
+                  <div className="step-card">
+                    <div className="step-icon">🚀</div>
+                    <div className="step-content">
+                      <h4>Launch Campaign</h4>
+                      <p>Deploy your campaign across selected platforms</p>
+                      <button className="step-button primary">Launch Now</button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           )}
